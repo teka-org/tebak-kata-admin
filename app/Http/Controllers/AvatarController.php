@@ -98,7 +98,7 @@ class AvatarController extends Controller
 
         if ($avatar) {
             $avatar->delete();
-            return response()->json(['message' => 'Avatar Deleted'], Response::HTTP_OK);
+            return response()->json(['message' => 'Avatar deleted'], Response::HTTP_OK);
         } else {
             return response()->json(['error' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
         }
