@@ -32,3 +32,8 @@ Route::get('/diamond', [\App\Http\Controllers\DiamondController::class, 'getDiam
 Route::put('/diamond/{id}', [\App\Http\Controllers\DiamondController::class, 'updateDiamond']);
 Route::delete('/diamond/{id}', [\App\Http\Controllers\DiamondController::class, 'deleteDiamond']);
 
+Route::post('/quiz', [\App\Http\Controllers\QuizController::class, 'createQuiz']);
+Route::get('/quiz', [\App\Http\Controllers\QuizController::class, 'getQuiz']);
+Route::put('/quiz/{id}', [\App\Http\Controllers\QuizController::class, 'updateQuiz']);
+Route::delete('/quiz/{id}', [\App\Http\Controllers\QuizController::class, 'deleteQuiz']);
+
