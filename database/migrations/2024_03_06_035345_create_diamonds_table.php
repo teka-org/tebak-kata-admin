@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('diamond', function (Blueprint $table) {
             $table->id();
-            $table->string("name")->nullable(false)->unique("users_name_unique");
-            $table->string("avatar")->nullable(false);
+            $table->string("image")->nullable(false);
+            $table->int("quantity")->nullable(false);
+            $table->int("price")->nullable(false);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('diamond');
     }
 };
