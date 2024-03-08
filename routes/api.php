@@ -27,3 +27,8 @@ Route::get('/avatar', [\App\Http\Controllers\AvatarController::class, 'getAllAva
 Route::put('/avatar/{id}', [\App\Http\Controllers\AvatarController::class, 'updateAvatar']);
 Route::delete('/avatar/{id}', [\App\Http\Controllers\AvatarController::class, 'deleteAvatar']);
 
+Route::post('/diamond', [\App\Http\Controllers\DiamondController::class, 'createDiamond']);
+Route::get('/diamond', [\App\Http\Controllers\DiamondController::class, 'getDiamond']);
+Route::put('/diamond/{id}', [\App\Http\Controllers\DiamondController::class, 'updateDiamond']);
+Route::delete('/diamond/{id}', [\App\Http\Controllers\DiamondController::class, 'deleteDiamond']);
+
