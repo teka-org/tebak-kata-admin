@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\AvatarController
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,10 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/users', [\App\Http\Controllers\UserController::class, 'register']);
+
+
 Route::post('/avatar', [\App\Http\Controllers\AvatarController::class, 'CreateAvatar']);
+Route::get('/avatar', [\App\Http\Controllers\AvatarController::class, 'getAllAvatar']);
+Route::put('/avatar/{id}', [\App\Http\Controllers\AvatarController::class, 'updateAvatar']);
+Route::delete('/avatar/{id}', [\App\Http\Controllers\AvatarController::class, 'deleteAvatar']);
+
