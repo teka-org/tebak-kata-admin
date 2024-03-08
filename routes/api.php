@@ -19,3 +19,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/users', [\App\Http\Controllers\UserController::class, 'register']);
+Route::post('/avatar', [\App\Http\Controllers\AvatarController::class, 'CreateAvatar']);
