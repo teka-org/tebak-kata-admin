@@ -19,7 +19,7 @@ class UserController extends Controller
             throw new HttpResponseException(response([
                 "errors" => [
                     "name" => [
-                        "name already registered hahahhsdfsdfdsafshdhfdsafhdsafsdfsdfsdfsdfhshd"
+                        "name already registered"
                     ]
                 ]
             ], 400));
