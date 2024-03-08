@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response; 
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\AvatarRequest;
 use App\Models\Avatar;
@@ -30,18 +31,14 @@ class AvatarController extends Controller
             ]
         ])->getSecurePath();
 
-        $uploadedFile = $request->file('image'); // assuming 'image' is the name of your file input
+        $uploadedFile = $request->file('image'); 
         $result = Cloudinary::upload($uploadedFile->getRealPath(), [
-        'folder' => 'teka_apps', // Optional folder name in Cloudinary
+        'folder' => 'teka_apps', 
         'public_id' => 'image-' . time(),
         'overwrite' =>  true,
         ]);
 
-        // Once uploaded, you can get the public URL of the uploaded image
         $image = $result->getSecurePath();
-
-        // $image = $request->file('image');
-        // $image->storeAs('public/storage', $image->hashName());
 
         $avatar = Avatar::create([
             'image'         => $image,
@@ -51,11 +48,106 @@ class AvatarController extends Controller
         ]);
 
         return (new AvatarResource($avatar))->response()->setStatusCode(201);
-        // return (new AvatarResource($avatar))->response()->json(['success' => 'Data Berhasil Disimpan!'], 201);
-        // return (new AvatarResource($avatar))->response()->setStatusCode(201)->json(['success' => 'Data Berhasil Disimpan!']);
-        // return response()->json(['success' => 'Data Berhasil Disimpan!'], 201);
-        // return redirect()->route('/avatar')->with(['success' => 'Data Berhasil Disimpan!']);
     }
+
+        public function getAllAvatar()
+    {
+        $avatars = Avatar::all();
+        return response()->json(['avatars' => $avatars], 200);
+    }
+
+    // public function updateAvatar(Avatar $avatar, Request $request)
+    // {
+    //         $this->validate($request, [
+    //         'image' => 'required|image|mimes:jpeg,jpg,png,|max:2048',
+    //         'avatar_name' => 'required|string',
+    //         'price' => 'required|numeric',
+    //         'status' => 'required|string',
+    //         ]);
+
+    //         cloudinary()->upload(
+    //             $request->file('image')->getRealPath(), [
+    //             'transformation' => [
+    //                 'gravity' => 'auto',
+    //                 'width' => 300,
+    //                 'height' => 300,
+    //                 'crop' => 'crop'
+    //             ]
+    //         ])->getSecurePath();
+
+    //         $avatar = Avatar::find($id);
+    
+    //         $uploadedFile = $request->file('image'); 
+    //         $result = Cloudinary::upload($uploadedFile->getRealPath(), [
+    //         'folder' => 'teka_apps', 
+    //         'public_id' => 'image-' . time(),
+    //         'overwrite' =>  true,
+    //         ]);
+    
+    //         $image = $result->getSecurePath();
+
+    //         $avatar->update([
+    //             'image'         => $image,
+    //             'avatar_name'   => $request->avatar_name,
+    //             'price'         => $request->price,
+    //             'status'        => $request->status,
+    //         ]);
+
+    //         return (new AvatarResource($avatar))->response()->setStatusCode(201);
+    // }
+
+
+    public function updateAvatar(Request $request, $id)
+    {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'avatar_name' => 'required|string',
+            'price' => 'required|numeric',
+            'status' => 'required|string',
+        ]);
+
+        $avatar = Avatar::find($id);
+
+        if (!$avatar) {
+            return response()->json(['message' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $uploadedFile = $request->file('image');
+        $result = Cloudinary::upload($uploadedFile->getRealPath(), [
+            'folder' => 'teka_apps',
+            'public_id' => 'image-' . time(),
+            'overwrite' => true,
+        ]);
+
+        $image = $result->getSecurePath();
+
+        $avatar->update([
+            'image' => $image,
+            'avatar_name' => $request->avatar_name,
+            'price' => $request->price,
+            'status' => $request->status,
+        ]);
+
+
+        // return response()->json(['avatar' => $avatar], Response::HTTP_OK);
+        return (new AvatarResource($avatar))->response()->setStatusCode(201);
+    }
+
+    
+
+        public function deleteAvatar(Request $request, $id)
+    {
+        $avatar = Avatar::find($id);
+
+        if ($avatar) {
+            $avatar->delete();
+            return response()->json(['message' => 'Avatar Deleted'], Response::HTTP_OK);
+        } else {
+            return response()->json(['error' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+
 }
 
 
