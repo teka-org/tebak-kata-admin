@@ -3,8 +3,10 @@
 /public/build
 /public/hot
 /public/storage
+/public/AdminLTE
 /storage/*.key
 /vendor
+
 .env
 .env.backup
 .env.production
