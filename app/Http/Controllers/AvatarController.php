@@ -114,6 +114,50 @@ class AvatarController extends Controller
         return view('pages.avatar.view-avatar', compact('avatars'));
     }
 
+     public function viewCreateAvatar()
+    {
+        // $avatars = Avatar::all();
+        return view('pages.avatar.create-avatar');
+    }
+
+     public function adminCreateAvatar(AvatarRequest $request)
+    {
+        $this-> validate($request, [
+            'image' => 'required|image|mimes:jpeg,jpg,png,|max:2048',
+            'avatar_name' => 'required|string',
+            'price' => 'required|numeric',
+            // 'status' => 'required|string',
+        ]);
+
+        cloudinary()->upload(
+            $request->file('image')->getRealPath(), [
+            'transformation' => [
+                'gravity' => 'auto',
+                'width' => 300,
+                'height' => 300,
+                'crop' => 'crop'
+            ]
+        ])->getSecurePath();
+
+        $uploadedFile = $request->file('image'); 
+        $result = Cloudinary::upload($uploadedFile->getRealPath(), [
+        'folder' => 'teka_apps', 
+        'public_id' => 'image-' . time(),
+        'overwrite' =>  true,
+        ]);
+
+        $image = $result->getSecurePath();
+
+        $avatar = Avatar::create([
+            'image'         => $image,
+            'avatar_name'   => $request->avatar_name,
+            'price'         => $request->price,
+            // 'status'        => $request->status,
+        ]);
+
+        return (new AvatarResource($avatar))->response()->setStatusCode(201);
+    }
+
     public function viewEditAvatar(Request $request, $id)
     {
 

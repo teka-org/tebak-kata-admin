@@ -18,6 +18,8 @@ Route::get('/', function () {
 });
 
 Route::get('/avatar', [\App\Http\Controllers\AvatarController::class, 'index']);
+Route::get('/avatar/create', [\App\Http\Controllers\AvatarController::class, 'viewCreateAvatar']);
+Route::post('/avatar/create', [\App\Http\Controllers\AvatarController::class, 'adminCreateAvatar']);
 Route::delete('/avatar/delete/{id}', [\App\Http\Controllers\AvatarController::class, 'adminDeletevatar']);
 Route::get('/avatar/edit/{id}', [\App\Http\Controllers\AvatarController::class, 'viewEditAvatar']);
 Route::put('/avatar/edit/{id}', [\App\Http\Controllers\AvatarController::class, 'adminUpdateAvatar']);

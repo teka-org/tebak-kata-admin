@@ -48,6 +48,9 @@
         <a href="/users" class="nav-link">User</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
+        <a href="/avatar" class="nav-link">Avatar</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
         <a href="/quiz" class="nav-link">Quiz</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
