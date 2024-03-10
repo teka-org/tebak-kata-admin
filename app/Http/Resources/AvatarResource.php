@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
 class AvatarResource extends JsonResource
 {
     /**
@@ -19,7 +20,7 @@ class AvatarResource extends JsonResource
             'id' =>$this->id,
             'image' =>$this->image,
             'avatar_name' =>$this->avatar_name,
-            'status' =>$this->status,
+            // 'status' =>$this->status,
             'price' =>$this->price,
         ];
     }

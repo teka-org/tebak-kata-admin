@@ -26,7 +26,7 @@ class AvatarRequest extends FormRequest
             return [
                 'image' =>['required'],
                 'avatar_name' => ['required'],
-                'status' => ['required'],
+                // 'status' => ['required'],
                 'price' => ['required'],
             ];
     }
