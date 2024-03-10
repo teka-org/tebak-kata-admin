@@ -14,5 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.master');
+});
+Route::get('/users', function () {
+    return view('pages.users.users');
+});
+Route::get('/avatar', function () {
+    return view('pages.avatar.avatar');
+});
+Route::get('/quiz', function () {
+    return view('pages.quiz.quiz');
+});
+Route::get('/payment', function () {
+    return view('pages.payment.payment');
 });
