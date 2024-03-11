@@ -21,55 +21,35 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('AdminLTE')}}/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/chart.js/Chart.min.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/sparklines/sparkline.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/jqvmap/jquery.vmap.min.js"></script> -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/jqvmap/maps/jquery.vmap.usa.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="{{asset('AdminLTE')}}/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/jquery-knob/jquery.knob.min.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/moment/moment.min.js"></script> -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/daterangepicker/daterangepicker.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/moment/moment.min.js"></script>
+<script src="{{asset('AdminLTE')}}/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Summernote -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/summernote/summernote-bs4.min.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/summernote/summernote-bs4.min.js"></script>
 <!-- overlayScrollbars -->
-<!-- <script src="{{asset('AdminLTE')}}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
+<script src="{{asset('AdminLTE')}}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
-<!-- <script src="{{asset('AdminLTE')}}/dist/js/adminlte.js"></script> -->
+<script src="{{asset('AdminLTE')}}/dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- <script src="{{asset('AdminLTE')}}/dist/js/pages/dashboard.js"></script> -->
 
-<!-- Bootstrap 4 -->
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<!-- ChartJS -->
-<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
-<!-- Sparkline -->
-<script src="{{ asset('vendor/sparklines/sparkline.js') }}"></script>
-<!-- JQVMap -->
-<script src="{{ asset('vendor/jqvmap/jquery.vmap.min.js') }}"></script>
-<script src="{{ asset('vendor/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
-<!-- jQuery Knob Chart -->
-<script src="{{ asset('vendor/jquery-knob/jquery.knob.min.js') }}"></script>
-<!-- daterangepicker -->
-<script src="{{ asset('vendor/moment/moment.min.js') }}"></script>
-<script src="{{ asset('vendor/daterangepicker/daterangepicker.js') }}"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="{{ asset('vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-<!-- Summernote -->
-<script src="{{ asset('vendor/summernote/summernote-bs4.min.js') }}"></script>
-<!-- overlayScrollbars -->
-<script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
 </body>
 </html>
