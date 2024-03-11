@@ -16,13 +16,6 @@ class AvatarController extends Controller
     // API
     public function CreateAvatar(AvatarRequest $request): JsonResponse
     {
-        $this-> validate($request, [
-            'image' => 'required|image|mimes:jpeg,jpg,png,|max:2048',
-            'avatar_name' => 'required|string',
-            'price' => 'required|numeric',
-            'status' => 'required|string',
-        ]);
-
         cloudinary()->upload(
             $request->file('image')->getRealPath(), [
             'transformation' => [
@@ -60,15 +53,8 @@ class AvatarController extends Controller
         return response()->json(['avatars' => $avatars], 200);
     }
 
-    public function updateAvatar(Request $request, $id)
+    public function updateAvatar(AvatarRequest $request, $id)
     {
-        $this->validate($request, [
-            'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-            'avatar_name' => 'required|string',
-            'price' => 'required|numeric',
-            // 'status' => 'required|string',
-        ]);
-
         $avatar = Avatar::find($id);
 
         if (!$avatar) {
@@ -92,10 +78,9 @@ class AvatarController extends Controller
         ]);
 
         return (new AvatarResource($avatar))->response()->setStatusCode(201);
-        // return (new AvatarResource($avatar))->redirect()->away('/avatar')->with('success', 'Avatar updated successfully.');
     }
 
-    public function deleteAvatar(Request $request, $id)
+    public function deleteAvatar( $id)
     {
         $avatar = Avatar::find($id);
 
@@ -126,13 +111,6 @@ class AvatarController extends Controller
 
      public function adminCreateAvatar(AvatarRequest $request)
     {
-        $this-> validate($request, [
-            'image' => 'required|image|mimes:jpeg,jpg,png,|max:2048',
-            'avatar_name' => 'required|string',
-            'price' => 'required|numeric',
-            // 'status' => 'required|string',
-        ]);
-
         cloudinary()->upload(
             $request->file('image')->getRealPath(), [
             'transformation' => [
@@ -159,10 +137,10 @@ class AvatarController extends Controller
             // 'status'        => $request->status,
         ]);
 
-        return (new AvatarResource($avatar))->response()->setStatusCode(201);
+        return redirect()->away('/avatar')->with('success', 'Avatar Created!.');
     }
 
-    public function viewEditAvatar(Request $request, $id)
+    public function viewEditAvatar($id)
     {
 
         $avatar = Avatar::find($id);
@@ -172,19 +150,11 @@ class AvatarController extends Controller
             return response()->json(['message' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
         }
 
-        // return response()->json(['avatar' => $avatar], Response::HTTP_OK);
         return view('pages.avatar.edit-avatar', compact('avatar', 'pageTitle'));
     }
 
-    public function adminUpdateAvatar(Request $request, $id)
+    public function adminUpdateAvatar(AvatarRequest $request, $id)
     {
-        $this->validate($request, [
-            'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-            'avatar_name' => 'required|string',
-            'price' => 'required|numeric',
-            // 'status' => 'required|string',
-        ]);
-
         $avatar = Avatar::find($id);
 
         if (!$avatar) {
@@ -206,12 +176,10 @@ class AvatarController extends Controller
             'price' => $request->price,
             // 'status' => $request->status,
         ]);
-
-        // return (new AvatarResource($avatar))->redirect()->away('/avatar')->with('success', 'Avatar updated successfully.');
-        return (new AvatarResource($avatar))->response()->setStatusCode(201);
+        return redirect()->away('/avatar')->with('success', 'Avatar updated successfully!.');
     }
 
-    public function adminDeletevatar(Request $request, $id)
+    public function adminDeletevatar($id)
     {
         $avatar = Avatar::find($id);
 
