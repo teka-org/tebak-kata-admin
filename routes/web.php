@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.master');
-});
+// Route::get('/', function () {
+//     return view('index');
+// });
+Route::get('/', [\App\Http\Controllers\Controller::class, 'index']);
 
 Route::get('/avatar', [\App\Http\Controllers\AvatarController::class, 'index']);
 Route::get('/avatar/create', [\App\Http\Controllers\AvatarController::class, 'viewCreateAvatar']);

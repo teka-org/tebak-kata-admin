@@ -107,17 +107,21 @@ class AvatarController extends Controller
         }
     }
 
-    // view
+    ////////////////////////////////////////////// view //////////////////////////////////////////
      public function index()
     {
         $avatars = Avatar::all();
-        return view('pages.avatar.view-avatar', compact('avatars'));
+        $pageTitle = 'Teka | Avatar';
+
+        return view('pages.avatar.view-avatar', compact('avatars', 'pageTitle'));
     }
 
      public function viewCreateAvatar()
     {
         // $avatars = Avatar::all();
-        return view('pages.avatar.create-avatar');
+        $pageTitle = 'Teka | Create Avatar';
+
+        return view('pages.avatar.create-avatar', compact('pageTitle'));
     }
 
      public function adminCreateAvatar(AvatarRequest $request)
@@ -162,13 +166,14 @@ class AvatarController extends Controller
     {
 
         $avatar = Avatar::find($id);
+        $pageTitle = 'Teka | Edit Avatar';
 
         if (!$avatar) {
             return response()->json(['message' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
         }
 
         // return response()->json(['avatar' => $avatar], Response::HTTP_OK);
-        return view('pages.avatar.edit-avatar', compact('avatar'));
+        return view('pages.avatar.edit-avatar', compact('avatar', 'pageTitle'));
     }
 
     public function adminUpdateAvatar(Request $request, $id)
