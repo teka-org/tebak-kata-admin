@@ -65,4 +65,84 @@ class QuizController extends Controller
             return response()->json(['message' => 'Quiz Deleted'], Response::HTTP_NOT_FOUND);
         }
     }
+
+
+    
+    ////////////////////////////////////////////// view //////////////////////////////////////////
+    public function index()
+    {
+        $quiz = Quiz::all();
+        $pageTitle = 'Teka | Quiz';
+
+        return view('pages.quiz.view-quiz', compact('quiz', 'pageTitle'));
+    }
+
+     public function viewCreateQuiz()
+    {
+        // $avatars = Avatar::all();
+        $pageTitle = 'Teka | Create Quiz';
+
+        return view('pages.quiz.create-quiz', compact('pageTitle'));
+    }
+
+     public function adminCreateQuiz(QuizRequest $request)
+    {
+        $this-> validate($request, [
+            'question' => 'required|string',
+            'answer' => 'required|string',
+        ]);
+
+
+        $quiz = Quiz::create([
+            'question'   => $request->question,
+            'answer'     => $request->answer,
+        ]);
+
+        return (new QuizResource($quiz))->response()->setStatusCode(201);
+    }
+
+    public function viewEditQuiz(Request $request, $id)
+    {
+
+        $quiz = Quiz::find($id);
+        $pageTitle = 'Teka | Edit Quiz';
+
+        if (!$quiz) {
+            return response()->json(['message' => 'Quiz not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // return response()->json(['avatar' => $avatar], Response::HTTP_OK);
+        return view('pages.quiz.edit-quiz', compact('quiz', 'pageTitle'));
+    }
+
+    public function adminUpdateQuiz(Request $request, $id)
+    {
+        $this-> validate($request, [
+            'question' => 'required|string',
+            'answer' => 'required|string',
+        ]);
+
+     
+        $quiz = Quiz::find($id);
+
+        $quiz->update([
+            'question'   => $request->question,
+            'answer'     => $request->answer,
+        ]);
+
+        return (new QuizResource($quiz))->response()->setStatusCode(201);
+    }
+
+    public function adminDeleteQuiz(Request $request, $id)
+    {
+        $quiz = Quiz::find($id);
+
+        if ($quiz) {
+            $quiz->delete();
+            return redirect()->away('/quiz')->with('success', 'Quiz Deleted!.');
+        } else {
+            return response()->json(['error' => 'Quiz not found'], Response::HTTP_NOT_FOUND);
+        }
+    }
+
 }
