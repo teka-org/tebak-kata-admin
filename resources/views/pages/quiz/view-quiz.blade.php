@@ -9,12 +9,12 @@
       <!-- <%- include ../../partials/messages.ejs %> -->
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Avatar</h1>
+          <h1>Quiz</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active">Avatar</li>
+            <li class="breadcrumb-item active">Quiz</li>
           </ol>
         </div>
       </div>
@@ -30,7 +30,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
-                <a href="/avatar/create" class="btn btn-primary">
+                <a href="/quiz/create" class="btn btn-primary">
                   <i class="nav-icon far fa-plus-square"></i>
                   Tambah
                 </a>
@@ -38,7 +38,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-            @include('pages.avatar.table')
+            @include('pages.quiz.table')
             </div>
             <!-- /.card-body -->
           </div>

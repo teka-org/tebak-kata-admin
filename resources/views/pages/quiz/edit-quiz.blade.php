@@ -8,12 +8,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Avatar</h1>
+          <h1>Quiz</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/avatar">avatar</a></li>
+            <li class="breadcrumb-item"><a href="/quiz">Quiz</a></li>
             <li class="breadcrumb-item active">Edit</li>
           </ol>
         </div>
@@ -32,45 +32,30 @@
             <div class="card-body">
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Form edit avatar "{{$avatar->avatar_name}}"</h3>
+                  <h3 class="card-title">Form edit quiz "{{$quiz->question}}"</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form action="/avatar/edit/{{ $avatar->id }}" method="POST" enctype="multipart/form-data">
+                <form action="/quiz/edit/{{ $quiz->id }}" method="POST" >
                 @csrf
                 @method('PUT')
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="name">Masukan nama avatar</label>
-                      <input type="text" value="{{$avatar->avatar_name}}" name="avatar_name" class="form-control" id="avatar_name" placeholder="masukan nama avatar" required />
+                      <label for="question">Masukan pertanyaan</label>
+                      <input type="text" value="{{$quiz->question}}" name="question" class="form-control" id="question" placeholder="masukan pertanyaan" required />
                     </div>
                   </div>
                   <div class="card-body">
-                      <label for="name">Masukan Image</label>
+                      <label for="answer">Masukan Jawaban</label>
                     <div class="form-group">
-                      <img
-                        src="{{$avatar->image}}"
-                        class="img-fluid rounded-top py-3"
-                        style="height: 20%; width: 20%;"
-                        alt=""
-                      />
-                      <!-- <img id="perview" src="{{$avatar->image}}" style="height: 20%; width: 20%;"> -->
-                      
-                      <input type="file" value="{{$avatar->image}}" name="image" class="form-control" id="image" placeholder="masukan image avatar" />
+                      <input type="text" value="{{$quiz->answer}}" name="answer" class="form-control" id="answer" placeholder="masukan pertanyaan" />
                     </div>
                   </div>
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label for="name">Masukan Harga</label>
-                      <input type="number" value="{{$avatar->price}}" name="price" class="form-control" id="price" placeholder="masukan harga avatar" />
-                    </div>
-                  </div>
-
                   <div class="card-footer">
                
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
                     <button type="submit" class="btn btn-secondary">
-                      <a href="/avatar" style="color: white"><i class="fa fa-undo"></i> Cancel</a>
+                      <a href="/quiz" style="color: white"><i class="fa fa-undo"></i> Cancel</a>
                     </button>
                   </div>
                 </form>
