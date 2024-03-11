@@ -20,7 +20,13 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/users', [\App\Http\Controllers\UserController::class, 'register']);
+Route::post('/users/login', [\App\Http\Controllers\UserController::class, 'login']);
 
+Route::middleware(\App\Http\Middleware\ApiAuthMiddleware::class)->group(function () {
+    Route::get('/users/current', [\App\Http\Controllers\UserController::class, 'get']);
+    Route::put('/users/current', [\App\Http\Controllers\UserController::class, 'update']);
+    Route::delete('/users/loguout', [\App\Http\Controllers\UserController::class, 'logout']);
+});
 
 Route::post('/avatar', [\App\Http\Controllers\AvatarController::class, 'CreateAvatar']);
 Route::get('/avatar', [\App\Http\Controllers\AvatarController::class, 'getAllAvatar']);

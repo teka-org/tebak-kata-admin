@@ -6,14 +6,14 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UserRegisterRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user() != null;
     }
 
     /**
@@ -24,11 +24,8 @@ class UserRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required'],
-            'email' => ['required', 'email'],
-            'avatar' => ['required'],
-            'purchasedAvatars' => ['required', 'array'],
-            'diamond' => ['required'],
+            'name' => ['nullable', 'max:100'],
+            'avatar' => ['nullable', 'max:100']
         ];
     }
     protected function failedValidation(Validator $validator)
