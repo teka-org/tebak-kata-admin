@@ -13,11 +13,6 @@ class QuizController extends Controller
 {
     public function createQuiz(QuizRequest $request): JsonResponse
     {
-        $this-> validate($request, [
-            'question'=> 'required|string',
-            'answer'=> 'required|string',
-        ]);
-
 
         $quiz = Quiz::create([
             'question'      => $request->question,
@@ -33,20 +28,14 @@ class QuizController extends Controller
         return response()->json(['quiz' => $quiz], 200);
     }
 
-    public function updateQuiz(Request $request, $id)
+    public function updateQuiz(QuizRequest $request, $id)
     {
-        $this->validate($request, [
-            
-            'question'=> 'required|string',
-            'answer'=> 'required|string',
-        ]);
 
         $quiz = Quiz::find($id);
 
         if(!$quiz){
             return response()->json(['message' => 'Quiz not found'], response::HTTP_NOT_FOUND);
         }
-
 
         $quiz->update([
             'question' => $request->question,
@@ -56,7 +45,7 @@ class QuizController extends Controller
         return (new QuizResource($quiz))->response()->setStatusCode(201);
     }
 
-    public function deleteQuiz(Request $request, $id)
+    public function deleteQuiz($id)
     {
         $quiz = Quiz::find ($id);
 
@@ -87,18 +76,12 @@ class QuizController extends Controller
 
      public function adminCreateQuiz(QuizRequest $request)
     {
-        $this-> validate($request, [
-            'question' => 'required|string',
-            'answer' => 'required|string',
-        ]);
-
-
         $quiz = Quiz::create([
             'question'   => $request->question,
             'answer'     => $request->answer,
         ]);
 
-        return (new QuizResource($quiz))->response()->setStatusCode(201);
+        return redirect()->away('/quiz')->with('success', 'Question Created!.');
     }
 
     public function viewEditQuiz(Request $request, $id)
@@ -117,11 +100,6 @@ class QuizController extends Controller
 
     public function adminUpdateQuiz(Request $request, $id)
     {
-        $this-> validate($request, [
-            'question' => 'required|string',
-            'answer' => 'required|string',
-        ]);
-
      
         $quiz = Quiz::find($id);
 
@@ -130,7 +108,7 @@ class QuizController extends Controller
             'answer'     => $request->answer,
         ]);
 
-        return (new QuizResource($quiz))->response()->setStatusCode(201);
+        return redirect()->away('/quiz')->with('success', 'Question Updated!.');
     }
 
     public function adminDeleteQuiz(Request $request, $id)
