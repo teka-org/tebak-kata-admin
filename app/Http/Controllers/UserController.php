@@ -33,19 +33,19 @@ class UserController extends Controller
         $user = new User();
 
         // Check for null pointer reference error in case the file is not present
-        if ($request->hasFile('avatar')) {
-            $avatarFile = $request->file('avatar');
+        if ($request->hasFile('user')) {
+            $userFile = $request->file('user');
 
             try {
-                // Upload file avatar ke Cloudinary
-                $cloudinaryUpload = Cloudinary::upload($avatarFile->getRealPath(), [
+                // Upload file user ke Cloudinary
+                $cloudinaryUpload = Cloudinary::upload($userFile->getRealPath(), [
                     'folder' => 'teka_apps',
                     'public_id' => 'image_' . time(),
                     'overwrite' => true,
                 ]);
 
-                // Menyimpan URL avatar yang diunggah dalam array $data
-                $data['avatar'] = $cloudinaryUpload->getSecurePath();
+                // Menyimpan URL user yang diunggah dalam array $data
+                $data['user'] = $cloudinaryUpload->getSecurePath();
             } catch (\Throwable $e) {
                 report($e);
 
@@ -55,10 +55,10 @@ class UserController extends Controller
             }
         }
 
-        if ($request->hasFile('purchasedAvatars')) {
-            $data['purchasedAvatars'] = [];
+        if ($request->hasFile('purchasedusers')) {
+            $data['purchasedusers'] = [];
 
-            foreach ($request->file('purchasedAvatars') as $file) {
+            foreach ($request->file('purchasedusers') as $file) {
                 try {
                     $cloudinaryUpload = Cloudinary::upload($file->getRealPath(), [
                         'folder' => 'teka_apps',
@@ -66,8 +66,8 @@ class UserController extends Controller
                         'overwrite' => true,
                     ]);
 
-                    // Menyimpan URL avatar yang diunggah dalam array $purchasedAvatarsUrls
-                    $data['purchasedAvatars'][]['avatar'] = $cloudinaryUpload->getSecurePath();
+                    // Menyimpan URL user yang diunggah dalam array $purchasedusersUrls
+                    $data['purchasedusers'][]['user'] = $cloudinaryUpload->getSecurePath();
                 } catch (\Throwable $e) {
                     report($e);
 
@@ -135,23 +135,23 @@ class UserController extends Controller
             $user->name = $data['name'];
         }
 
-        if ($request->hasFile('avatar')) {
-            $avatarFile = $request->file('avatar');
+        if ($request->hasFile('user')) {
+            $userFile = $request->file('user');
 
             try {
-                // Upload file avatar to Cloudinary
-                $cloudinaryUpload = Cloudinary::upload($avatarFile->getRealPath(), [
+                // Upload file user to Cloudinary
+                $cloudinaryUpload = Cloudinary::upload($userFile->getRealPath(), [
                     'folder' => 'teka_apps',
                     'public_id' => 'image_' . time(),
                     'overwrite' => true,
                 ]);
 
-                $user->avatar = $cloudinaryUpload->getSecurePath();
+                $user->user = $cloudinaryUpload->getSecurePath();
             } catch (\Throwable $e) {
                 report($e);
 
                 throw new HttpResponseException(
-                    response(['message' => 'There was an error uploading the avatar file'], 500)
+                    response(['message' => 'There was an error uploading the user file'], 500)
                 );
             }
         }
@@ -192,5 +192,110 @@ class UserController extends Controller
         return response()->json([
             "data" => true
         ])->setStatusCode(200);
+    }
+
+
+
+//////////////////////////////////// VIEW /////////////////////////////////////////////////////
+
+    public function index()
+    {
+        $users = User::all();
+        $pageTitle = 'Teka | User';
+        $user = Auth::guard('admin')->user();
+        
+        return view('pages.user.view-user', compact('users', 'pageTitle'), ['user' => $user]);
+    }
+ 
+  
+     public function viewCreateUser()
+    {
+        // $users = user::all();
+        $pageTitle = 'Teka | Create User';
+        $user = Auth::guard('admin')->user();
+        return view('pages.user.create-user', compact('pageTitle'), ['user' => $user]);
+    }
+
+     public function adminCreateUser(userRequest $request)
+    {
+        cloudinary()->upload(
+            $request->file('image')->getRealPath(), [
+            'transformation' => [
+                'gravity' => 'auto',
+                'width' => 300,
+                'height' => 300,
+                'crop' => 'crop'
+            ]
+        ])->getSecurePath();
+
+        $uploadedFile = $request->file('image'); 
+        $result = Cloudinary::upload($uploadedFile->getRealPath(), [
+        'folder' => 'teka_apps', 
+        'public_id' => 'image-' . time(),
+        'overwrite' =>  true,
+        ]);
+
+        $image = $result->getSecurePath();
+
+        $user = user::create([
+            'image'         => $image,
+            'user_name'   => $request->user_name,
+            'price'         => $request->price,
+            // 'status'        => $request->status,
+        ]);
+
+        return redirect()->away('/user')->with('success', 'user Created!.');
+    }
+
+    public function viewEditUser($id)
+    {
+
+        $user = User::find($id);
+        $pageTitle = 'Teka | Edit user';
+        $user = Auth::guard('admin')->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'user not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return view('pages.user.edit-user', compact('user', 'pageTitle'), ['user' => $user]);
+    }
+
+    public function adminUpdateUser(userRequest $request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'user not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $uploadedFile = $request->file('image');
+        $result = Cloudinary::upload($uploadedFile->getRealPath(), [
+            'folder' => 'teka_apps',
+            'public_id' => 'image-' . time(),
+            'overwrite' => true,
+        ]);
+
+        $image = $result->getSecurePath();
+
+        $user->update([
+            'image' => $image,
+            'user_name' => $request->user_name,
+            'price' => $request->price,
+            // 'status' => $request->status,
+        ]);
+        return redirect()->away('/user')->with('success', 'user updated successfully!.');
+    }
+
+    public function adminDeleteUser($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            $user->delete();
+            return redirect()->away('/user')->with('success', 'user Deleted!.');
+        } else {
+            return response()->json(['error' => 'user not found'], Response::HTTP_NOT_FOUND);
+        }
     }
 }
