@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\QuizRequest;
 use App\Http\Resources\QuizResource;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
@@ -62,16 +63,19 @@ class QuizController extends Controller
     {
         $quiz = Quiz::all();
         $pageTitle = 'Teka | Quiz';
+        $user = Auth::guard('admin')->user();
+       
 
-        return view('pages.quiz.view-quiz', compact('quiz', 'pageTitle'));
+        return view('pages.quiz.view-quiz', compact('quiz', 'pageTitle') , ['user' => $user]);
     }
 
      public function viewCreateQuiz()
     {
         // $avatars = Avatar::all();
         $pageTitle = 'Teka | Create Quiz';
+        $user = Auth::guard('admin')->user();
 
-        return view('pages.quiz.create-quiz', compact('pageTitle'));
+        return view('pages.quiz.create-quiz', compact('pageTitle'), ['user'=> $user]);
     }
 
      public function adminCreateQuiz(QuizRequest $request)
@@ -89,13 +93,14 @@ class QuizController extends Controller
 
         $quiz = Quiz::find($id);
         $pageTitle = 'Teka | Edit Quiz';
+        $user = Auth::guard('admin')->user();
 
         if (!$quiz) {
             return response()->json(['message' => 'Quiz not found'], Response::HTTP_NOT_FOUND);
         }
 
         // return response()->json(['avatar' => $avatar], Response::HTTP_OK);
-        return view('pages.quiz.edit-quiz', compact('quiz', 'pageTitle'));
+        return view('pages.quiz.edit-quiz', compact('quiz', 'pageTitle'), ['user'=>$user]);
     }
 
     public function adminUpdateQuiz(Request $request, $id)
