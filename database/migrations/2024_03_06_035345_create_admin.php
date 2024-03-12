@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diamond', function (Blueprint $table) {
+        Schema::create('admin', function (Blueprint $table) {
             $table->id();
+            $table->string("email")->nullable(false);
+            $table->string("password")->nullable(false);
             $table->string("image")->nullable(false);
-            $table->int("quantity")->nullable(false);
-            $table->int("price")->nullable(false);
+            $table->string("name")->nullable(false);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diamond');
+        Schema::dropIfExists('admin');
     }
 };
