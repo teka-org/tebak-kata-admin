@@ -10,10 +10,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{asset('AdminLte')}}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="{{$user->image}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info ">
-          <a href="#" class="d-block">ADMIN</a>
+          <a href="/" class="d-block">{{$user->name}}</a>
         </div>
       </div>
 
@@ -24,15 +24,15 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="pages/calendar.html" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+            <a href="/user" class="nav-link">
+              <i class="nav-icon fa fa-user"></i>
               <p>
                 Users
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <a href="/avatar" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Avatars
@@ -40,16 +40,24 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
+            <a href="/quiz" class="nav-link">
+            <i class="nav-icon fa fa-question-circle"></i>
               <p>
                 Quiz
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
+            <a href="/diamond" class="nav-link">
+            <i class="nav-icon fa fa-diamond-alt"></i>
+              <p>
+                Diamond
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/payment" class="nav-link">
+              <i class="nav-icon fa fa-credit-card"></i>
               <p>
                 Payment
               </p>
@@ -58,7 +66,13 @@
          
         </ul>
       </nav>
+      
+      <form action="/logout" method="POST" style="position: absolute; bottom: 10px; width: 93%;">
+        @csrf
+        <button  type="submit" class="btn btn-danger w-100">Log Out</button>
+      </form>
       <!-- /.sidebar-menu -->
     </div>
+    
     <!-- /.sidebar -->
   </aside>

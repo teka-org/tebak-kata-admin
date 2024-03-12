@@ -6,6 +6,7 @@ use App\Models\Avatar;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response; 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AvatarRequest;
 use App\Http\Resources\AvatarResource;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
@@ -97,8 +98,9 @@ class AvatarController extends Controller
     {
         $avatars = Avatar::all();
         $pageTitle = 'Teka | Avatar';
-
-        return view('pages.avatar.view-avatar', compact('avatars', 'pageTitle'));
+        $user = Auth::guard('admin')->user();
+        
+        return view('pages.avatar.view-avatar', compact('avatars', 'pageTitle'), ['user' => $user]);
     }
 
      public function viewCreateAvatar()
@@ -145,12 +147,13 @@ class AvatarController extends Controller
 
         $avatar = Avatar::find($id);
         $pageTitle = 'Teka | Edit Avatar';
+        $user = Auth::guard('admin')->user();
 
         if (!$avatar) {
             return response()->json(['message' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return view('pages.avatar.edit-avatar', compact('avatar', 'pageTitle'));
+        return view('pages.avatar.edit-avatar', compact('avatar', 'pageTitle'), ['user'=>$user]);
     }
 
     public function adminUpdateAvatar(AvatarRequest $request, $id)

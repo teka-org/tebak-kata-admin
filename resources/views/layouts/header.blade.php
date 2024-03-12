@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ $pageTitle }}</title>
 
+  <link rel="icon" href="/teka-t.png" >
+
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="{{asset('AdminLTE')}}/https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -26,15 +28,15 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('AdminLTE')}}/plugins/summernote/summernote-bs4.min.css">
 
-
+  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
+  <!-- <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake img-circle" src="/teka-square.png" alt="tekaLogo" height="200" width="200">
-  </div>
+  </div> -->
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -54,6 +56,9 @@
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="/quiz" class="nav-link">Quiz</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/diamond" class="nav-link">Diamond</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="/payment" class="nav-link">Payment</a>
