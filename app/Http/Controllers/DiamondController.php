@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Diamond;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response; 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\DiamondRequest;
 use App\Http\Resources\DiamondResource;
@@ -105,4 +106,100 @@ class DiamondController extends Controller
             return response()->json(['message' => 'Diamond deleted'], Response::HTTP_NOT_FOUND);
         }
     }
+
+
+     ////////////////////////////////////////////// view //////////////////////////////////////////
+     public function index()
+    {
+        $diamonds = Diamond::all();
+        $pageTitle = 'Teka | Diamond';
+        $user = Auth::guard('admin')->user();
+        
+        return view('pages.diamond.view-diamond', compact('diamonds', 'pageTitle'), ['user' => $user]);
+    }
+
+     public function viewCreatediamond()
+    {
+        // $diamonds = diamond::all();
+        $pageTitle = 'Teka | Create Diamond';
+        $user = Auth::guard('admin')->user();
+
+        return view('pages.diamond.create-diamond', compact('pageTitle'), ['user' => $user]);
+    }
+
+     public function adminCreatediamond(diamondRequest $request)
+    {
+        cloudinary()->upload(
+            $request->file('image')->getRealPath()
+        )->getSecurePath();
+
+        $uploadedFile = $request->file('image'); 
+        $result = Cloudinary::upload($uploadedFile->getRealPath(), [
+        'folder' => 'teka_apps', 
+        'public_id' => 'image-' . time(),
+        'overwrite' =>  true,
+        ]);
+
+        $image = $result->getSecurePath();
+
+        $diamond = diamond::create([
+            'image'         => $image,
+            'quantity'   => $request->quantity,
+            'price'         => $request->price,
+        ]);
+
+        return redirect()->away('/diamond')->with('success', 'Diamond Created!.');
+    }
+
+    public function viewEditdiamond($id)
+    {
+
+        $diamond = Diamond::find($id);
+        $pageTitle = 'Teka | Edit Diamond';
+        $user = Auth::guard('admin')->user();
+
+        if (!$diamond) {
+            return response()->json(['message' => 'Diamond not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return view('pages.diamond.edit-diamond', compact('diamond', 'pageTitle'), ['user' => $user]);
+    }
+
+    public function adminUpdatediamond(diamondRequest $request, $id)
+    {
+        $diamond = Diamond::find($id);
+
+        if (!$diamond) {
+            return response()->json(['message' => 'Diamond not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $uploadedFile = $request->file('image');
+        $result = Cloudinary::upload($uploadedFile->getRealPath(), [
+            'folder' => 'teka_apps',
+            'public_id' => 'image-' . time(),
+            'overwrite' => true,
+        ]);
+
+        $image = $result->getSecurePath();
+
+        $diamond->update([
+            'image'         => $image,
+            'quantity'      => $request->quantity,
+            'price'         => $request->price,
+        ]);
+        return redirect()->away('/diamond')->with('success', 'Diamond updated successfully!.');
+    }
+
+    public function adminDeletevatar($id)
+    {
+        $diamond = Diamond::find($id);
+
+        if ($diamond) {
+            $diamond->delete();
+            return redirect()->away('/diamond')->with('success', 'diamond Deleted!.');
+        } else {
+            return response()->json(['error' => 'diamond not found'], Response::HTTP_NOT_FOUND);
+        }
+    }
+
 }
