@@ -21,6 +21,7 @@ class Controller extends BaseController
     {
 
         $user = Auth::guard('admin')->user();
+        
         $avatarCount = Avatar::count();
         $quizCount = Quiz::count();
         $diamondCount = Diamond::count();
