@@ -106,9 +106,10 @@ class AvatarController extends Controller
      public function viewCreateAvatar()
     {
         // $avatars = Avatar::all();
+        $user = Auth::guard('admin')->user();
         $pageTitle = 'Teka | Create Avatar';
 
-        return view('pages.avatar.create-avatar', compact('pageTitle'));
+        return view('pages.avatar.create-avatar', compact('pageTitle'), ['user' => $user]);
     }
 
      public function adminCreateAvatar(AvatarRequest $request)
