@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -11,6 +12,7 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -19,7 +21,7 @@ class UserController extends Controller
     public function register(UserRegisterRequest $request): JsonResponse
     {
         $data = $request->validated();
-        var_dump($data);
+        // var_dump($data);
         if (User::where('name', $data['name'])->count() > 0) {
             throw new HttpResponseException(response([
                 "errors" => [
@@ -32,33 +34,31 @@ class UserController extends Controller
 
         $user = new User();
 
-        // Check for null pointer reference error in case the file is not present
-        if ($request->hasFile('user')) {
-            $userFile = $request->file('user');
+        // ini cloudinary
+        // if ($request->hasFile('avatar')) {
+        //     $avatarFile = $request->file('avatar');
 
-            try {
-                // Upload file user ke Cloudinary
-                $cloudinaryUpload = Cloudinary::upload($userFile->getRealPath(), [
-                    'folder' => 'teka_apps',
-                    'public_id' => 'image_' . time(),
-                    'overwrite' => true,
-                ]);
+        //     try {
+        //         $cloudinaryUpload = Cloudinary::upload($avatarFile->getRealPath(), [
+        //             'folder' => 'teka_apps',
+        //             'public_id' => 'image_' . time(),
+        //             'overwrite' => true,
+        //         ]);
 
-                // Menyimpan URL user yang diunggah dalam array $data
-                $data['user'] = $cloudinaryUpload->getSecurePath();
-            } catch (\Throwable $e) {
-                report($e);
+        //         $data['avatar'] = $cloudinaryUpload->getSecurePath();
+        //     } catch (\Throwable $e) {
+        //         report($e);
 
-                throw new HttpResponseException(
-                    response(['message' => 'There was an error uploading the file'], 500)
-                );
-            }
-        }
+        //         throw new HttpResponseException(
+        //             response(['message' => 'There was an error uploading the file'], 500)
+        //         );
+        //     }
+        // }
 
-        if ($request->hasFile('purchasedusers')) {
-            $data['purchasedusers'] = [];
+        if ($request->hasFile('purchasedAvatars')) {
+            $data['purchasedAvatars'] = [];
 
-            foreach ($request->file('purchasedusers') as $file) {
+            foreach ($request->file('purchasedAvatars') as $file) {
                 try {
                     $cloudinaryUpload = Cloudinary::upload($file->getRealPath(), [
                         'folder' => 'teka_apps',
@@ -66,8 +66,8 @@ class UserController extends Controller
                         'overwrite' => true,
                     ]);
 
-                    // Menyimpan URL user yang diunggah dalam array $purchasedusersUrls
-                    $data['purchasedusers'][]['user'] = $cloudinaryUpload->getSecurePath();
+                    // Menyimpan URL avatar yang diunggah dalam array $purchasedAvatarsUrls
+                    $data['purchasedAvatars'][]['avatar'] = $cloudinaryUpload->getSecurePath();
                 } catch (\Throwable $e) {
                     report($e);
 
@@ -135,39 +135,44 @@ class UserController extends Controller
             $user->name = $data['name'];
         }
 
-        if ($request->hasFile('user')) {
-            $userFile = $request->file('user');
-
-            try {
-                // Upload file user to Cloudinary
-                $cloudinaryUpload = Cloudinary::upload($userFile->getRealPath(), [
+        try {
+            if ($request->hasFile('avatar')) {
+                // Upload file avatar ke Cloudinary dan simpan URL-nya di dalam model User
+                $avatarFile = $request->file('avatar');
+                $cloudinaryUpload = Cloudinary::upload($avatarFile->getRealPath(), [
                     'folder' => 'teka_apps',
-                    'public_id' => 'image_' . time(),
+                    'public_id' => 'avatar_' . time(),
                     'overwrite' => true,
                 ]);
-
-                $user->user = $cloudinaryUpload->getSecurePath();
-            } catch (\Throwable $e) {
-                report($e);
-
-                throw new HttpResponseException(
-                    response(['message' => 'There was an error uploading the user file'], 500)
-                );
+                $user->avatar = $cloudinaryUpload->getSecurePath();
             }
-        }
 
-        try {
+            if ($request->hasFile('purchasedAvatars')) {
+                // Upload file purchasedAvatars ke Cloudinary dan simpan URL-nya di dalam model User sebagai array string
+                $purchasedAvatarFiles = $request->file('purchasedAvatars');
+                $purchasedAvatarsUrls = [];
+                foreach ($purchasedAvatarFiles as $file) {
+                    $cloudinaryUpload = Cloudinary::upload($file->getRealPath(), [
+                        'folder' => 'teka_apps',
+                        'public_id' => 'purchased_avatar_' . time(),
+                        'overwrite' => true,
+                    ]);
+                    $purchasedAvatarsUrls[] = $cloudinaryUpload->getSecurePath();
+                }
+                $user->purchasedAvatars = $purchasedAvatarsUrls;
+            }
+
             $user->save();
+
+            return new UserResource($user);
         } catch (\Throwable $e) {
             report($e);
-
-            throw new HttpResponseException(
-                response(['message' => 'Error saving data: ' . $e->getMessage()], 500)
-            );
+            throw new HttpResponseException(response(['message' => 'Error updating user: ' . $e->getMessage()], 500));
         }
-
-        return new UserResource($user);
     }
+
+
+
 
     public function logout(Request $request): JsonResponse
     {
@@ -196,19 +201,19 @@ class UserController extends Controller
 
 
 
-//////////////////////////////////// VIEW /////////////////////////////////////////////////////
+    //////////////////////////////////// VIEW /////////////////////////////////////////////////////
 
     public function index()
     {
         $users = User::all();
         $pageTitle = 'Teka | User';
         $user = Auth::guard('admin')->user();
-        
+
         return view('pages.user.view-user', compact('users', 'pageTitle'), ['user' => $user]);
     }
- 
-  
-     public function viewCreateUser()
+
+
+    public function viewCreateUser()
     {
         // $users = user::all();
         $pageTitle = 'Teka | Create User';
@@ -216,23 +221,25 @@ class UserController extends Controller
         return view('pages.user.create-user', compact('pageTitle'), ['user' => $user]);
     }
 
-     public function adminCreateUser(userRequest $request)
+    public function adminCreateUser(UserRequest $request)
     {
         cloudinary()->upload(
-            $request->file('image')->getRealPath(), [
-            'transformation' => [
-                'gravity' => 'auto',
-                'width' => 300,
-                'height' => 300,
-                'crop' => 'crop'
+            $request->file('image')->getRealPath(),
+            [
+                'transformation' => [
+                    'gravity' => 'auto',
+                    'width' => 300,
+                    'height' => 300,
+                    'crop' => 'crop'
+                ]
             ]
-        ])->getSecurePath();
+        )->getSecurePath();
 
-        $uploadedFile = $request->file('image'); 
+        $uploadedFile = $request->file('image');
         $result = Cloudinary::upload($uploadedFile->getRealPath(), [
-        'folder' => 'teka_apps', 
-        'public_id' => 'image-' . time(),
-        'overwrite' =>  true,
+            'folder' => 'teka_apps',
+            'public_id' => 'image-' . time(),
+            'overwrite' =>  true,
         ]);
 
         $image = $result->getSecurePath();
@@ -249,43 +256,61 @@ class UserController extends Controller
 
     public function viewEditUser($id)
     {
-
-        $user = User::find($id);
         $pageTitle = 'Teka | Edit user';
-        $user = Auth::guard('admin')->user();
 
-        if (!$user) {
-            return response()->json(['message' => 'user not found'], Response::HTTP_NOT_FOUND);
+        try {
+            $user = User::findOrFail($id);
+            $user = Auth::guard('admin')->user();
+
+            if (!$user) {
+                throw new \Exception('User not found');
+            }
+
+            return view('pages.user.edit-user', compact('user', 'pageTitle'), ['user' => $user]);
+        } catch (\Exception $e) {
+            report($e);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-
-        return view('pages.user.edit-user', compact('user', 'pageTitle'), ['user' => $user]);
     }
+
+
 
     public function adminUpdateUser(userRequest $request, $id)
     {
         $user = User::find($id);
 
-        if (!$user) {
+        if (is_null($user)) {
+            report(new \Exception('User not found'));
             return response()->json(['message' => 'user not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $uploadedFile = $request->file('image');
-        $result = Cloudinary::upload($uploadedFile->getRealPath(), [
-            'folder' => 'teka_apps',
-            'public_id' => 'image-' . time(),
-            'overwrite' => true,
-        ]);
+        try {
+            $uploadedFile = $request->file('image');
+            if (is_null($uploadedFile)) {
+                throw new \Exception('Uploaded file is null');
+            }
+            $result = Cloudinary::upload($uploadedFile->getRealPath(), [
+                'folder' => 'teka_apps',
+                'public_id' => 'image-' . time(),
+                'overwrite' => true,
+            ]);
 
-        $image = $result->getSecurePath();
+            $image = $result->getSecurePath();
 
-        $user->update([
-            'image' => $image,
-            'user_name' => $request->user_name,
-            'price' => $request->price,
-            // 'status' => $request->status,
-        ]);
+            $user->update([
+                'image' => $image,
+                'user_name' => $request->user_name,
+                'price' => $request->price,
+                // 'status' => $request->status,
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
         return redirect()->away('/user')->with('success', 'user updated successfully!.');
     }
+
 
     public function adminDeleteUser($id)
     {
