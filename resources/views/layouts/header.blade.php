@@ -61,7 +61,7 @@
         <a href="/diamond" class="nav-link">Diamond</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/payment" class="nav-link">Payment</a>
+        <a href="/transaction" class="nav-link">Transaction</a>
       </li>
     </ul>
 

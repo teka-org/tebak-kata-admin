@@ -37,4 +37,33 @@ class TransactionController extends Controller
             ], 500);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////// view ////////////////////////////////////////////
+
+    public function index()
+    {
+        $transaction = Transaction::all();
+        $pageTitle = 'Teka | Transaction';
+        $user = Auth::guard('admin')->user();
+        
+        return view('pages.transaction.view-transaction', compact('transaction', 'pageTitle'), ['user' => $user]);
+    }
 }

@@ -56,10 +56,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/payment" class="nav-link">
+            <a href="/transaction" class="nav-link">
               <i class="nav-icon fa fa-credit-card"></i>
               <p>
-                Payment
+              Transaction
               </p>
             </a>
           </li>

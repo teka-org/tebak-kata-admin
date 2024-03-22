@@ -48,10 +48,7 @@ Route::middleware(\App\Http\Middleware\AdminAuthMiddleware::class)->group(functi
     Route::get('/user/edit/{id}', [\App\Http\Controllers\UserController::class, 'viewEditUser']);
     Route::put('/user/edit/{id}', [\App\Http\Controllers\UserController::class, 'adminUpdateUser']);
 
-
-    Route::get('/payment', function () {
-        return view('pages.payment.payment');
-    });
+    Route::get('/transaction', [\App\Http\Controllers\TransactionController::class, 'index']);
 
     Route::post('/logout', [\App\Http\Controllers\AdminController::class, 'logout']);
 });

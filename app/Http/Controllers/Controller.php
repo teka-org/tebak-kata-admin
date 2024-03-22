@@ -6,7 +6,7 @@ use App\Models\Avatar;
 use App\Models\Quiz;
 use App\Models\Diamond;
 use App\Models\User;
-use App\Models\Payment;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -25,12 +25,12 @@ class Controller extends BaseController
         $avatarCount = Avatar::count();
         $quizCount = Quiz::count();
         $diamondCount = Diamond::count();
-        // $paymentCount = Payment::count();
+        $transactionCount = Transaction::count();
         $userCount = User::count();
         $pageTitle = 'Teka | Dashboard';
 
         return view('index', compact('pageTitle'), ['user' => $user, 'avatarCount' => $avatarCount, 'quizCount' => $quizCount, 'diamondCount' => $diamondCount, 
-        // 'paymentCount' => $paymentCount, 
+        'transactionCount' => $transactionCount, 
         'userCount' => $userCount]);
     }
 }
