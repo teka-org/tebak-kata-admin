@@ -83,6 +83,9 @@ class QuizController extends Controller
         $quiz = Quiz::create([
             'question'   => $request->question,
             'answer'     => $request->answer,
+            'option1' => $request->option1,
+            'option2' => $request->option2,
+            'option3' => $request->option3,
         ]);
 
         return redirect()->away('/quiz')->with('success', 'Question Created!.');
@@ -111,6 +114,9 @@ class QuizController extends Controller
         $quiz->update([
             'question'   => $request->question,
             'answer'     => $request->answer,
+            'option1' => $request->option1,
+            'option2' => $request->option2,
+            'option3' => $request->option3,
         ]);
 
         return redirect()->away('/quiz')->with('success', 'Question Updated!.');

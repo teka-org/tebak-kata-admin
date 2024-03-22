@@ -51,6 +51,26 @@
                       <input type="text" value="{{$quiz->answer}}" name="answer" class="form-control" id="answer" placeholder="masukan pertanyaan" />
                     </div>
                   </div>
+
+                  <div class="card-body">
+                    <label for="option1">Option 1</label>
+                    <div class="form-group">
+                      <input type="text" value="{{$quiz->option1}}" name="option1" class="form-control" id="option1" placeholder="masukan pertanyaan" />
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <label for="option2">Option 2</label>
+                    <div class="form-group">
+                      <input type="text" value="{{$quiz->option2}}" name="option2" class="form-control" id="option2" placeholder="masukan pertanyaan" />
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <label for="option3">Option 3</label>
+                    <div class="form-group">
+                      <input type="text" value="{{$quiz->option3}}" name="option3" class="form-control" id="option3" placeholder="masukan pertanyaan" />
+                    </div>
+                  </div>
+                  
                   <div class="card-footer">
                
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>

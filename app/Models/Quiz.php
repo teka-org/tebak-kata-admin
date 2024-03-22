@@ -16,6 +16,6 @@ class Quiz extends Model
     public $timestamps = true;
     public $incrementing = true;
     
-    protected $fillable = ['question', 'answer'];
+    protected $fillable = ['question', 'answer', 'option1', 'option2', 'option3'];
 }
 

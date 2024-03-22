@@ -4,6 +4,7 @@
       <th style="width: 7%">No</th>
       <th style="width: 20%">question</th>
       <th>answer</th>
+      <th style="width: 19%">options</th>
       <th style="width: 19%">Actions</th>
     </tr>
   </thead>
@@ -14,6 +15,13 @@
         <td>{{ $index + 1 }}</td>
         <td>{{ $quiz->question }}</td>
         <td>{{ $quiz->answer }}</td>
+        <td>
+        1. {{ $quiz->option1 }}
+        <br>
+        2. {{ $quiz->option2 }}
+        <br>
+        3. {{ $quiz->option3 }}
+      </td>
 
         <!-- button -->
         <td style="text-align: center">

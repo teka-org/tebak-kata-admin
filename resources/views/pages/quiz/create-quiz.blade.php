@@ -52,6 +52,25 @@
                     </div>
                   </div>
 
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="option1">Masukan option 1</label>
+                      <input type="text" name="option1" class="form-control" id="option1" placeholder="masukan option" required />
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="option2">Masukan option 2</label>
+                      <input type="text" name="option2" class="form-control" id="option2" placeholder="masukan option" required />
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="option3">Masukan option 3</label>
+                      <input type="text" name="option3" class="form-control" id="option3" placeholder="masukan jawaban" required />
+                    </div>
+                  </div>
+
                   <div class="card-footer">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
                     <button type="submit" class="btn btn-secondary">
